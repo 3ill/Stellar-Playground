@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Wallet } from '@stellar/typescript-wallet-sdk';
-import { StellarNetworkType } from '../interface/account_creation.interface';
+import {
+  AnchorDomainInterface,
+  AnchorDomains,
+  AnchorProviderInterface,
+  StellarNetworkType,
+} from '../interface/account_creation.interface';
 
 @Injectable()
 export class AccountCreation {
@@ -18,5 +23,25 @@ export class AccountCreation {
     } else {
       return this.provideMainWallet();
     }
+  }
+
+  provideStellarServer(network: StellarNetworkType) {
+    const wallet = this.provideWallet(network);
+    return wallet.stellar();
+  }
+
+  provideAnchorDomain(domain: AnchorDomainInterface) {
+    const anchorDomain = domain.domain ? domain.domain : AnchorDomains.DEFAULT;
+    return anchorDomain;
+  }
+
+  provideAnchor(args: AnchorProviderInterface) {
+    const { network, domain } = args;
+    const wallet = this.provideWallet(network);
+    const anchorDomain = this.provideAnchorDomain({
+      domain,
+    });
+
+    return wallet.anchor({ homeDomain: anchorDomain });
   }
 }
