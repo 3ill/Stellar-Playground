@@ -1,1 +1,1 @@
-export interface AccountCreation {}
+export type StellarNetworkType = 'testnet' | 'mainnet';
