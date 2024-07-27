@@ -11,3 +11,8 @@ export interface AnchorDomainInterface {
 export interface AnchorProviderInterface extends AnchorDomainInterface {
   network: StellarNetworkType;
 }
+
+export interface AccountBalanceInterface {
+  network: StellarNetworkType;
+  publicKey: string;
+}
