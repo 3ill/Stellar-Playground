@@ -48,4 +48,11 @@ describe('AccountCreation', () => {
       expect(anchor).toBeDefined();
     });
   });
+
+  describe('Account', () => {
+    it('Should return a valid account config', () => {
+      const account = provider.provideAccount('testnet');
+      console.log(account);
+    });
+  });
 });
