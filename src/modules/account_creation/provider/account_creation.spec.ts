@@ -15,4 +15,16 @@ describe('AccountCreation', () => {
   it('should be defined', () => {
     expect(provider).toBeDefined();
   });
+
+  describe('Wallets', () => {
+    it('Should provide correct network config for wallets', () => {
+      const testWallet = provider.provideWallet('testnet');
+      const mainWallet = provider.provideWallet('mainnet');
+      console.log(testWallet);
+      console.log(mainWallet);
+
+      expect(testWallet).toBeDefined();
+      expect(mainWallet).toBeDefined();
+    });
+  });
 });
