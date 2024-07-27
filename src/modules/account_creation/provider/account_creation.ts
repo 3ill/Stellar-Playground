@@ -41,4 +41,8 @@ export class AccountCreation {
 
     return wallet.anchor({ homeDomain: anchorDomain });
   }
+
+  provideAccount(network: StellarNetworkType) {
+    return this.provideStellarServer(network).account();
+  }
 }
