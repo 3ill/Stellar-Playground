@@ -1,0 +1,10 @@
+import { config } from 'dotenv';
+config();
+
+export const ADMIN_TEST_PUBLIC_KEY =
+  process.env.ADMIN_PUBLIC_KEY ||
+  'GASQVJ4TC5B2DZES247AWFGWP2YKL7JGQXZVSA5F32LKBXB3CUS2Y743';
+export const ADMIN_TEST_PRIVATE_KEY =
+  process.env.ADMIN_PRIVATE_KEY ||
+  'SB4LA4MQZNY6DZUKTNSHACILB7NL6M7QNJD3IRPWIWVGFCY3SC7Z37PV';
+export const FRIENDBOT_URL = 'https://friendbot.stellar.org';
