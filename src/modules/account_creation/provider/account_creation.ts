@@ -1,10 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Wallet } from '@stellar/typescript-wallet-sdk';
 import {
   AnchorDomains,
   AnchorProviderInterface,
   StellarNetworkType,
 } from '../interface/account_creation.interface';
+import axios from 'axios';
+import { FRIENDBOT_URL } from '@/shared/constants/constants';
 
 @Injectable()
 export class AccountCreation {
@@ -44,5 +50,24 @@ export class AccountCreation {
 
   provideAccount(network: StellarNetworkType) {
     return this.provideStellarServer(network).account();
+  }
+
+  async faucet(publicKey: string) {
+    try {
+      const response = await axios.get(FRIENDBOT_URL, {
+        params: {
+          addr: publicKey,
+        },
+      });
+
+      return {
+        status: HttpStatus.OK,
+        message: 'Faucet request sent',
+        data: response.data,
+      };
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(error);
+    }
   }
 }
