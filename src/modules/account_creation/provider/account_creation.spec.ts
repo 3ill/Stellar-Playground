@@ -55,4 +55,13 @@ describe('AccountCreation', () => {
       console.log(account);
     });
   });
+
+  describe('Faucet', () => {
+    it.only('should send some test XLM', async () => {
+      const result = await provider.faucet(
+        'GCZHGZFQ6NQOUFDO6KEVPDLVPXWQLRVKBELXZLI7WNV5YRKM7DF24HFT',
+      );
+      console.log(result);
+    });
+  });
 });
