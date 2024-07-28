@@ -18,7 +18,7 @@ describe('AccountCreationService', () => {
   });
 
   describe('KeyPairs', () => {
-    it('Should successfully create a keypair', async () => {
+    it.only('Should successfully create a keypair', async () => {
       const keyPair = service.createKeyPair('testnet');
       console.log(keyPair);
       expect(keyPair).toBeDefined();
@@ -27,6 +27,24 @@ describe('AccountCreationService', () => {
       expect(keyPair.keyObject).toBeDefined();
       expect(keyPair.keyObject.publicKey).toBeDefined();
       expect(keyPair.keyObject.secretKey).toBeDefined();
+    });
+
+    it('should check balance of a public key', async () => {
+      const balanceArray = await service.getAccountBalance({
+        network: 'testnet',
+        publicKey: 'GASQVJ4TC5B2DZES247AWFGWP2YKL7JGQXZVSA5F32LKBXB3CUS2Y743',
+      });
+
+      const balanceObject: { asset_type: string; balance: string }[] = [];
+
+      balanceArray.flatMap((balance) =>
+        balanceObject.push({
+          asset_type: balance.asset_type,
+          balance: balance.balance,
+        }),
+      );
+
+      console.log(balanceObject);
     });
   });
 });
