@@ -7,6 +7,7 @@ import { Wallet } from '@stellar/typescript-wallet-sdk';
 import {
   AnchorDomains,
   AnchorProviderInterface,
+  HorizonNetwork,
   StellarNetworkType,
 } from '../interface/account_creation.interface';
 import axios from 'axios';
@@ -28,6 +29,12 @@ export class AccountCreation {
     } else {
       return this.provideMainWallet();
     }
+  }
+
+  provideHorizonDomain(network: StellarNetworkType) {
+    const horizonDomain =
+      network === 'testnet' ? HorizonNetwork.TESTNET : HorizonNetwork.MAINNET;
+    return horizonDomain;
   }
 
   provideStellarServer(network: StellarNetworkType) {
