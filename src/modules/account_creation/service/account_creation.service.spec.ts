@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountCreationService } from './account_creation.service';
 import { AccountCreation } from '../provider/account_creation';
+import { ADMIN_TEST_PRIVATE_KEY } from '@/shared/constants/constants';
 
 describe('AccountCreationService', () => {
   let service: AccountCreationService;
@@ -52,8 +53,7 @@ describe('AccountCreationService', () => {
     it.only('should successfully create a new account', async () => {
       const account = await service.createAccount({
         network: 'testnet',
-        payerPrivateKey:
-          'SB4LA4MQZNY6DZUKTNSHACILB7NL6M7QNJD3IRPWIWVGFCY3SC7Z37PV',
+        payerPrivateKey: ADMIN_TEST_PRIVATE_KEY,
       });
 
       console.log(account);
