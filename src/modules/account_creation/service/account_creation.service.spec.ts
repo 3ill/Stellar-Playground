@@ -18,7 +18,7 @@ describe('AccountCreationService', () => {
   });
 
   describe('KeyPairs', () => {
-    it.only('Should successfully create a keypair', async () => {
+    it('Should successfully create a keypair', async () => {
       const keyPair = service.createKeyPair('testnet');
       console.log(keyPair);
       expect(keyPair).toBeDefined();
@@ -45,6 +45,18 @@ describe('AccountCreationService', () => {
       );
 
       console.log(balanceObject);
+    });
+  });
+
+  describe('Account Creation', () => {
+    it.only('should successfully create a new account', async () => {
+      const account = await service.createAccount({
+        network: 'testnet',
+        payerPrivateKey:
+          'SB4LA4MQZNY6DZUKTNSHACILB7NL6M7QNJD3IRPWIWVGFCY3SC7Z37PV',
+      });
+
+      console.log(account);
     });
   });
 });
