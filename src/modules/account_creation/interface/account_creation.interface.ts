@@ -4,6 +4,11 @@ export enum AnchorDomains {
   DEFAULT = 'testanchor.stellar.org',
 }
 
+export enum HorizonNetwork {
+  TESTNET = 'https://horizon-testnet.stellar.org',
+  MAINNET = 'https://horizon.stellar.org',
+}
+
 export interface AnchorDomainInterface {
   domain?: string;
 }
@@ -15,4 +20,9 @@ export interface AnchorProviderInterface extends AnchorDomainInterface {
 export interface AccountBalanceInterface {
   network: StellarNetworkType;
   publicKey: string;
+}
+
+export interface AccountCreationInterface {
+  network: StellarNetworkType;
+  payerPrivateKey: string;
 }
