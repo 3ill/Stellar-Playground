@@ -11,13 +11,7 @@ import {
 } from '../interface/account_creation.interface';
 import { Keypair } from '@stellar/stellar-sdk';
 import { AccountKeypair } from '@stellar/typescript-wallet-sdk';
-import {
-  TransactionBuilder,
-  BASE_FEE,
-  Networks,
-  Memo,
-  Operation,
-} from 'stellar-sdk';
+import { Memo, Operation } from 'stellar-sdk';
 
 @Injectable()
 export class AccountCreationService {
@@ -75,19 +69,19 @@ export class AccountCreationService {
   async createAccount(args: AccountCreationInterface) {
     const { network, payerPrivateKey } = args;
     try {
-      const { server, payerKeyPair, sourceAccount } =
-        await this.accountCreationConfig({
-          network,
-          payerPrivateKey,
-        });
+      const { server, payerKeyPair } = await this.accountCreationConfig({
+        network,
+        payerPrivateKey,
+      });
       const destinationAccountConfig = this.createKeyPair(network);
       const destinationKeyPair = destinationAccountConfig.data;
 
-      const transaction = new TransactionBuilder(sourceAccount, {
-        fee: BASE_FEE,
-        networkPassphrase: Networks.TESTNET,
-        memo: new Memo('text', 'Account Creation Transactio'),
-      })
+      const builder = await this.provider.initializeTransaction({
+        network,
+        keyPair: payerKeyPair,
+      });
+
+      const transaction = builder
         .addOperation(
           Operation.createAccount({
             destination: destinationKeyPair.publicKey,
@@ -129,6 +123,63 @@ export class AccountCreationService {
       return balance;
     } catch (error) {
       error;
+      console.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async changeAccountMasterKey(args: AccountCreationInterface) {
+    const { network, payerPrivateKey } = args;
+    try {
+      const { server, payerKeyPair } = await this.accountCreationConfig({
+        network,
+        payerPrivateKey,
+      });
+      const destinationAccountConfig = this.createKeyPair(network);
+      const destinationKeyPair = destinationAccountConfig.data;
+
+      const builder = this.provider.initializeTransaction({
+        network,
+        keyPair: payerKeyPair,
+      });
+
+      const tx = (await builder)
+        .addOperation(
+          Operation.setOptions({
+            signer: {
+              ed25519PublicKey: destinationKeyPair.publicKey,
+              weight: 3,
+            },
+          }),
+        )
+        .addOperation(
+          Operation.setOptions({
+            masterWeight: 0,
+            lowThreshold: 1,
+            medThreshold: 2,
+            highThreshold: 3,
+          }),
+        )
+        .addMemo(Memo.text('Master key changed'))
+        .setTimeout(30)
+        .build();
+
+      tx.sign(payerKeyPair.keypair);
+      const result = await server.submitTransaction(tx);
+      if (!result) {
+        return {
+          status: HttpStatus.BAD_REQUEST,
+          message: 'Could not change account master key',
+        };
+      }
+
+      return {
+        status: HttpStatus.OK,
+        message: 'Account master key changed successfully',
+        data: result.hash,
+        recipientData: destinationAccountConfig.keyObject,
+      };
+    } catch (error) {
       console.error(error);
       throw new InternalServerErrorException(error);
     }
