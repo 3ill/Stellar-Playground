@@ -8,10 +8,12 @@ import {
   AnchorDomains,
   AnchorProviderInterface,
   HorizonNetwork,
+  InitTransactionInterface,
   StellarNetworkType,
 } from '../interface/account_creation.interface';
 import axios from 'axios';
 import { FRIENDBOT_URL } from '@/shared/constants/constants';
+import { BASE_FEE, Memo, Networks, TransactionBuilder } from 'stellar-sdk';
 
 @Injectable()
 export class AccountCreation {
@@ -76,5 +78,19 @@ export class AccountCreation {
       console.error(error);
       throw new InternalServerErrorException(error);
     }
+  }
+
+  async initializeTransaction(args: InitTransactionInterface) {
+    const { network, keyPair } = args;
+    const sourceAccount = await this.provideStellarServer(
+      network,
+    ).server.loadAccount(keyPair.publicKey);
+    const builderNetwork =
+      network === 'testnet' ? Networks.TESTNET : Networks.PUBLIC;
+    return new TransactionBuilder(sourceAccount, {
+      fee: BASE_FEE,
+      networkPassphrase: builderNetwork,
+      memo: new Memo('text', 'Initialization Transaction'),
+    });
   }
 }
