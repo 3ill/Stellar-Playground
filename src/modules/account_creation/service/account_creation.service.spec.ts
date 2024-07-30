@@ -49,14 +49,28 @@ describe('AccountCreationService', () => {
     });
   });
 
-  describe('Account Creation', () => {
-    it.only('should successfully create a new account', async () => {
+  describe('Account Operations', () => {
+    it('should successfully create a new account', async () => {
       const account = await service.createAccount({
         network: 'testnet',
         payerPrivateKey: ADMIN_TEST_PRIVATE_KEY,
       });
 
       console.log(account);
+    });
+
+    it.only('Should successfully change master key', async () => {
+      const response = await service.changeAccountMasterKey({
+        network: 'testnet',
+        payerPrivateKey: ADMIN_TEST_PRIVATE_KEY,
+      });
+
+      console.log(response);
+
+      expect(response).toBeDefined();
+      expect(response.status).toBe(200);
+      expect(response.message).toBe('Account created successfully');
+      expect(response.data).toBeDefined();
     });
   });
 });
