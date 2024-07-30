@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountCreation } from './account_creation';
 import { AnchorDomains } from '../interface/account_creation.interface';
+import { ADMIN_TEST_PUBLIC_KEY } from '@/shared/constants/constants';
 
 describe('AccountCreation', () => {
   let provider: AccountCreation;
@@ -53,6 +54,19 @@ describe('AccountCreation', () => {
     it('Should return a valid account config', () => {
       const account = provider.provideAccount('testnet');
       console.log(account);
+    });
+
+    it.only('should return account signers', async () => {
+      const server = provider.provideStellarServer('testnet').server;
+      const account = server.loadAccount(ADMIN_TEST_PUBLIC_KEY);
+
+      const signers = (await account).signers;
+      console.log(signers);
+
+      expect(signers).toBeDefined();
+      expect(signers.length).toBe(2);
+      expect(signers[1].key).toBe(ADMIN_TEST_PUBLIC_KEY);
+      expect(signers[0].weight).toBe(3);
     });
   });
 
