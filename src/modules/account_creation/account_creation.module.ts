@@ -6,5 +6,6 @@ import { AccountCreationController } from './controller/account_creation.control
 @Module({
   providers: [AccountCreationService, AccountCreationProvider],
   controllers: [AccountCreationController],
+  exports: [AccountCreationService, AccountCreationProvider],
 })
 export class AccountCreationModule {}
