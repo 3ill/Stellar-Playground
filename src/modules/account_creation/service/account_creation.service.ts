@@ -3,7 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { AccountCreation } from '../provider/account_creation';
+import { AccountCreationProvider } from '../provider/account_creation.provider';
 import {
   AccountBalanceInterface,
   AccountCreationInterface,
@@ -15,7 +15,7 @@ import { Memo, Operation } from 'stellar-sdk';
 
 @Injectable()
 export class AccountCreationService {
-  constructor(private readonly provider: AccountCreation) {}
+  constructor(private readonly provider: AccountCreationProvider) {}
 
   createKeyPair(network: StellarNetworkType) {
     try {

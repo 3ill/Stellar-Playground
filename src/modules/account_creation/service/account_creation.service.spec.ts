@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountCreationService } from './account_creation.service';
-import { AccountCreation } from '../provider/account_creation';
+import { AccountCreation } from '../provider/account_creation.provider';
 import { ADMIN_TEST_PRIVATE_KEY } from '@/shared/constants/constants';
 
 describe('AccountCreationService', () => {

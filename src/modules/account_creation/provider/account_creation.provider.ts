@@ -16,7 +16,7 @@ import { FRIENDBOT_URL } from '@/shared/constants/constants';
 import { BASE_FEE, Memo, Networks, TransactionBuilder } from 'stellar-sdk';
 
 @Injectable()
-export class AccountCreation {
+export class AccountCreationProvider {
   provideTestWallet() {
     return Wallet.TestNet();
   }

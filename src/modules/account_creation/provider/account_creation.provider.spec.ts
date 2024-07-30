@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AccountCreation } from './account_creation';
+import { AccountCreationProvider } from './account_creation.provider';
 import { AnchorDomains } from '../interface/account_creation.interface';
 import { ADMIN_TEST_PUBLIC_KEY } from '@/shared/constants/constants';
 
 describe('AccountCreation', () => {
-  let provider: AccountCreation;
+  let provider: AccountCreationProvider;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AccountCreation],
+      providers: [AccountCreationProvider],
     }).compile();
 
-    provider = module.get<AccountCreation>(AccountCreation);
+    provider = module.get<AccountCreationProvider>(AccountCreationProvider);
   });
 
   it('should be defined', () => {
