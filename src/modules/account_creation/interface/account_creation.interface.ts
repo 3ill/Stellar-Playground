@@ -1,3 +1,5 @@
+import { AccountKeypair } from '@stellar/typescript-wallet-sdk';
+
 export type StellarNetworkType = 'testnet' | 'mainnet';
 
 export enum AnchorDomains {
@@ -25,4 +27,9 @@ export interface AccountBalanceInterface {
 export interface AccountCreationInterface {
   network: StellarNetworkType;
   payerPrivateKey: string;
+}
+
+export interface InitTransactionInterface {
+  network: StellarNetworkType;
+  keyPair: AccountKeypair;
 }
