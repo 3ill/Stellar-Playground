@@ -48,6 +48,13 @@ describe('AccountCreation', () => {
       const anchor = provider.provideAnchor({ network: 'testnet' });
       expect(anchor).toBeDefined();
     });
+
+    it.only('Should connect to an anchor and list assets', async () => {
+      const anchor = provider.provideAnchor({ network: 'testnet' });
+      const assets = (await anchor.sep1()).currencies;
+
+      console.log(assets);
+    });
   });
 
   describe('Account', () => {
@@ -56,7 +63,7 @@ describe('AccountCreation', () => {
       console.log(account);
     });
 
-    it.only('should return account signers', async () => {
+    it('should return account signers', async () => {
       const server = provider.provideStellarServer('testnet').server;
       const account = server.loadAccount(ADMIN_TEST_PUBLIC_KEY);
 
