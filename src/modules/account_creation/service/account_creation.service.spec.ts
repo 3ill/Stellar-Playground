@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountCreationService } from './account_creation.service';
 import { AccountCreationProvider } from '../provider/account_creation.provider';
-import { ADMIN_TEST_PRIVATE_KEY } from '@/shared/constants/constants';
+import {
+  ADMIN_TEST_PRIVATE_KEY,
+  ADMIN_TEST_PUBLIC_KEY,
+} from '@/shared/constants/constants';
 
 describe('AccountCreationService', () => {
   let service: AccountCreationService;
@@ -30,10 +33,10 @@ describe('AccountCreationService', () => {
       expect(keyPair.keyObject!.secretKey).toBeDefined();
     });
 
-    it('should check balance of a public key', async () => {
+    it.only('should check balance of a public key', async () => {
       const balanceArray = await service.getAccountBalance({
         network: 'testnet',
-        publicKey: 'GASQVJ4TC5B2DZES247AWFGWP2YKL7JGQXZVSA5F32LKBXB3CUS2Y743',
+        publicKey: ADMIN_TEST_PUBLIC_KEY,
       });
 
       const balanceObject: { asset_type: string; balance: string }[] = [];
@@ -46,6 +49,7 @@ describe('AccountCreationService', () => {
       );
 
       console.log(balanceObject);
+      console.log(balanceArray);
     });
   });
 
@@ -59,7 +63,7 @@ describe('AccountCreationService', () => {
       console.log(account);
     });
 
-    it.only('Should successfully change master key', async () => {
+    it('Should successfully change master key', async () => {
       const response = await service.changeAccountMasterKey({
         network: 'testnet',
         payerPrivateKey: ADMIN_TEST_PRIVATE_KEY,
