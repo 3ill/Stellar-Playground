@@ -76,6 +76,13 @@ export class AccountCreationService {
       const destinationAccountConfig = this.createKeyPair(network);
       const destinationKeyPair = destinationAccountConfig.data;
 
+      if (!destinationKeyPair) {
+        return {
+          status: HttpStatus.BAD_GATEWAY,
+          message: 'error creating destination key pair',
+        };
+      }
+
       const builder = await this.provider.initializeTransaction({
         network,
         keyPair: payerKeyPair,
@@ -137,6 +144,13 @@ export class AccountCreationService {
       });
       const destinationAccountConfig = this.createKeyPair(network);
       const destinationKeyPair = destinationAccountConfig.data;
+
+      if (!destinationKeyPair) {
+        return {
+          status: HttpStatus.BAD_GATEWAY,
+          message: 'error creating destination key pair',
+        };
+      }
 
       const builder = this.provider.initializeTransaction({
         network,
