@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountCreationService } from './account_creation.service';
-import { AccountCreation } from '../provider/account_creation.provider';
+import { AccountCreationProvider } from '../provider/account_creation.provider';
 import { ADMIN_TEST_PRIVATE_KEY } from '@/shared/constants/constants';
 
 describe('AccountCreationService', () => {
@@ -8,7 +8,7 @@ describe('AccountCreationService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AccountCreationService, AccountCreation],
+      providers: [AccountCreationService, AccountCreationProvider],
     }).compile();
 
     service = module.get<AccountCreationService>(AccountCreationService);
@@ -26,8 +26,8 @@ describe('AccountCreationService', () => {
       expect(keyPair.status).toBe(200);
       expect(keyPair.message).toBe('Keypair created successfully');
       expect(keyPair.keyObject).toBeDefined();
-      expect(keyPair.keyObject.publicKey).toBeDefined();
-      expect(keyPair.keyObject.secretKey).toBeDefined();
+      expect(keyPair.keyObject!.publicKey).toBeDefined();
+      expect(keyPair.keyObject!.secretKey).toBeDefined();
     });
 
     it('should check balance of a public key', async () => {
